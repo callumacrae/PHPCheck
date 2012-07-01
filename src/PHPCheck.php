@@ -249,6 +249,18 @@ class PHPCheck {
 	}
 
 	/**
+	 * Returns the value given to it without doing anything with it. Useful
+	 * if you want to pass a function to a predicate without it being called.
+	 *
+	 * @param mixed $item Item to be returned.
+	 */
+	public static function Literal($item) {
+		return function () use ($item) {
+			return $item;
+		};
+	}
+
+	/**
 	 * Takes an array of specifiers and executes them.
 	 *
 	 * @example

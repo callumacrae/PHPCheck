@@ -112,6 +112,13 @@ $tests->claim('Integer specifier', function ($a, $b) {
 	PHPCheck::Integer(3, 5)
 ));
 
+$tests->claim('Literal specifier', function ($a, $b) {
+	return (is_callable($a) && $b === true);
+}, array(
+	PHPCheck::Literal(function(){}),
+	PHPCheck::Literal(true)
+));
+
 $tests->claim('SpecArray specifier', function ($ary) {
 	if (!is_int($ary[0]) || !is_int($ary[1])) {
 		return false;
