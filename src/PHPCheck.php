@@ -101,13 +101,15 @@ class PHPCheck {
 		$output = array();
 		if (!$groupName) {
 			foreach ($this->claims as $groupName => $claim) {
-				$output[] = '<h2>' . $groupName . '</h2><br />' . $this->getHTML($groupName);
+				$output[] = '<h2>' . $groupName . '</h2>' . $this->getHTML($groupName);
 			}
 
 			return implode('<br /><br />', $output);
 		} else {
 			foreach ($this->claims[$groupName] as $claim) {
-				$output[] = '<b>' . $claim[0] . ':</b> ' . ($claim[3] ? 'pass' : 'fail');
+				$status = $claim[3] ? 'pass' : ($claim[3] === false ? 'fail' : 'untested');
+				$color = $claim[3] ? 'green' : ($claim[3] === false ? 'red' : 'yellow');
+				$output[] = '<b style="color:' . $color . '">' . $claim[0] . ':</b> ' . $status;
 			}
 
 			return implode('<br />', $output);
