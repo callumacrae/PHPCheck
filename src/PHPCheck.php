@@ -202,6 +202,7 @@ class PHPCheck {
 
 	// SPECIFIERS ARE AWESOME
 
+
 	/**
 	 * Returns a specified number of a specifier in an array.
 	 *
@@ -249,10 +250,6 @@ class PHPCheck {
 	 * Returns a whole number between 0 and a specified integer, or a whole
 	 * number between two specifier integers.
 	 *
-	 * @example
-	 *	PHPCheck::Integer(5); // -> an integer between 0 and 5 inclusive
-	 *	PHPCheck::Integer(3, 5); // -> an integer between 3 and 5 inclusive
-	 * @param int $min Minimum number. If not specified, defaults to 0.
 	 * @param int $max Maximum number.
 	 */
 	public static function Integer($min, $max = '') {
@@ -311,11 +308,6 @@ class PHPCheck {
 	/**
 	 * Takes an array of specifiers and executes them.
 	 *
-	 * @example
-	 *	PHPCheck::SpecArray(
-	 *		PHPCheck::Integer(5),
-	 *		PHPCheck::Integer(5, 10)
-	 *	); // -> an array with two integers, eg [2, 6] or [5, 5]
 	 * @param array $array Array of specifiers.
 	 */
 	public static function SpecArray($array) {
