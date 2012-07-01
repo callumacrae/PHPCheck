@@ -47,6 +47,7 @@ class PHPCheck {
 				$claim[3] = $pass;
 			}
 		}
+		return $this;
 	}
 
 	public function getHTML($groupName = '') {
@@ -66,6 +67,11 @@ class PHPCheck {
 		}
 
 		return $output;
+	}
+
+	public function group($groupName) {
+		$this->group = $groupName;
+		return $this;
 	}
 
 
