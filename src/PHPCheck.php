@@ -77,6 +77,16 @@ class PHPCheck {
 
 	// SPECIFIERS ARE AWESOME
 
+	public static function SpecArray($array) {
+		return function () use ($array) {
+			foreach ($array as &$specifier) {
+				if (is_callable($specifier)) {
+					$specifier = call_user_func($specifier);
+				}
+			}
+		};
+	}
+
 	public static function Integer($min, $max = '') {
 		if ($max === '') {
 			$max = $min;
