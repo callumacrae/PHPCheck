@@ -235,7 +235,7 @@ class PHPCheck {
 	 *	PHPCheck::Integer(5); // -> an integer between 0 and 5 inclusive
 	 *	PHPCheck::Integer(3, 5); // -> an integer between 3 and 5 inclusive
 	 * @param int $min Minimum number. If not specified, defaults to 0.
-	 * @param in $max Maximum number.
+	 * @param int $max Maximum number.
 	 */
 	public static function Integer($min, $max = '') {
 		if ($max === '') {
@@ -257,6 +257,24 @@ class PHPCheck {
 	public static function Literal($item) {
 		return function () use ($item) {
 			return $item;
+		};
+	}
+
+	/**
+	 * Returns a random number between 0 and a specifier number, or a random
+	 * number between two specified numbers.
+	 *
+	 * @param int $min Minimum number. If not specified, defaults to 0.
+	 * @param int $max Maximum number.
+	 */
+	public static function Number($min, $max = '') {
+		if ($max === '') {
+			$max = $min;
+			$min = 0;
+		}
+
+		return function () use ($min, $max) {
+			return $min + ($max - $min) * (rand() / getrandmax());
 		};
 	}
 

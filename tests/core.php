@@ -119,6 +119,17 @@ $tests->claim('Literal specifier', function ($a, $b) {
 	PHPCheck::Literal(true)
 ));
 
+$tests->claim('Number specifier', function ($a, $b) {
+	if (!is_float($a) || !is_float($b)) {
+		return false;
+	}
+
+	return $a < $b; // both would have to equal 5, so won't happen
+}, array(
+	PHPCheck::Number(5),
+	PHPCheck::Number(5, 10)
+));
+
 $tests->claim('SpecArray specifier', function ($ary) {
 	if (!is_int($ary[0]) || !is_int($ary[1])) {
 		return false;
