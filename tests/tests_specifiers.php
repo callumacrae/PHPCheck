@@ -113,3 +113,11 @@ $tests->claim('SpecArray specifier 2 (with keys)', function ($ary) {
 	'foo'	=> PHPCheck::Integer(2),
 	'bar'	=> PHPCheck::Integer(3, 5)
 ))));
+
+$tests->claim('String specifier (simple value)', function ($a, $b, $c) {
+	return $a === '23' && ($b === '5' || $b === '6') && $c === '["a","b"]';
+}, array(
+	PHPCheck::String(23),
+	PHPCheck::String(PHPCheck::Integer(5, 6)),
+	PHPCheck::String(array('a', 'b'))
+));

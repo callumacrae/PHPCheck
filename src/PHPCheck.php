@@ -324,4 +324,15 @@ class PHPCheck {
 			return $array;
 		};
 	}
+
+	/**
+	 * Returns a stringified value, using json_encode.
+	 *
+	 * @param mixed $value Value to stringify.
+	 */
+	public static function String($value) {
+		return function () use ($value) {
+			return json_encode(PHPCheck::evalSpecifier($value));
+		};
+	}
 }
