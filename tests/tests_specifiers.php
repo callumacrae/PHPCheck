@@ -68,7 +68,7 @@ $tests->claim('Number specifier', function ($a, $b) {
 
 $OneOf_a = 0;
 $OneOf_b = 0; // This test will fail, but not very often at all
-$tests->claim('OneOf specifier', function ($which) use ($OneOf_a, $OneOf_b) {
+$tests->claim('OneOf specifier (array)', function ($which) use ($OneOf_a, $OneOf_b) {
 	if ($which === 'a' && $OneOf_a > 90 && $OneOf_b < 5) {
 		return false;
 	} else if ($OneOf_a < 5 && $OneOf_b > 90) {
@@ -85,6 +85,12 @@ $tests->claim('OneOf specifier', function ($which) use ($OneOf_a, $OneOf_b) {
 		return 'b';
 	}
 ))));
+
+$tests->claim('OneOf specifier (string)', function ($c) {
+	return strlen($c) === 1 && $c > 'b' && $c < 'h';
+}, array(
+	PHPCheck::OneOf('cdefg')
+));
 
 $tests->claim('SpecArray specifier', function ($ary) {
 	if (!is_int($ary[0]) || !is_int($ary[1])) {
