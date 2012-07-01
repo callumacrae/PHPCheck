@@ -17,6 +17,10 @@ $tests->claim('$tests->claim should work with specifiers', function ($a) {
 	return 'a';
 }));
 
+$tests->claim('$tests->claim should work without specifiers', function () {
+	return true;
+});
+
 $tests->claim('$tests->clear should work', function () use ($testTests) {
 	$testTests->claim('fail', function () {
 		return false;
@@ -51,15 +55,32 @@ $tests->claim('$tests->claim should work with fail', function () use ($testTests
 	);
 });
 
+$tests->claim('$tests->claim should work when not tested', function () use ($testTests) {
+	$testTests->clear();
+	$testTests->claim('missing', function () {});
+	return $testTests->getRaw('nogroup') === array(
+		array('missing', null)
+	);
+});
+
+$tests->claim('Groups should work', function () use ($testTests) {
+	$testTests->clear();
+	$testTests->group('Test group');
+	$testTests->claim('missing', function () {});
+
+	return $testTests->getRaw() === array(
+		array('nogroup', array()),
+		array('Test group', array(
+			array('missing', null),
+		)),
+	);
+});
+
 
 $tests->group('Specifier tests');
 
 $tests->claim('ArrayOf specifier', function ($a, $b) {
-	if ($b !== array('a', 'a', 'a')) {
-		return false;
-	}
-
-	if (!count($a) === 3) {
+	if ($b !== array('a', 'a', 'a') || !count($a) === 3) {
 		return false;
 	}
 
@@ -83,19 +104,11 @@ $tests->claim('Boolean specifier', function ($a, $b) {
 ));
 
 $tests->claim('Character specifier', function ($a, $b) {
-	if (strlen($a) !== 1 || strlen($b) !== 1) {
+	if (!is_string($a) || !is_string($b) || strlen($a) !== 1 || strlen($b) !== 1) {
 		return false;
 	}
 
-	if (!is_string($a) || !is_string($b)) {
-		return false;
-	}
-
-	if ($b < 'm' || $b > 'p') {
-		return false;
-	}
-
-	return true;
+	return ($b < 'q' && $b > 'l');
 }, array(
 	PHPCheck::character(),
 	PHPCheck::character('m', 'p')
@@ -139,6 +152,17 @@ $tests->claim('SpecArray specifier', function ($ary) {
 }, array(PHPCheck::SpecArray(array(
 	PHPCheck::Integer(2),
 	PHPCheck::Integer(3, 5)
+))));
+
+$tests->claim('SpecArray specifier 2 (with keys)', function ($ary) {
+	if (!is_int($ary['foo']) || !is_int($ary['bar'])) {
+		return false;
+	}
+
+	return $ary['foo'] < $ary['bar'];
+}, array(PHPCheck::SpecArray(array(
+	'foo'	=> PHPCheck::Integer(2),
+	'bar'	=> PHPCheck::Integer(3, 5)
 ))));
 
 

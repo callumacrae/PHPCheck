@@ -213,7 +213,7 @@ class PHPCheck {
 	 */
 	public static function Boolean($bias = 0.5) {
 		return function () use ($bias) {
-			return rand(0, 1000) < ($bias * 1000); // 1000 so bias more accurate
+			return rand(0, 1000) <= ($bias * 1000); // 1000 so bias more accurate
 		};
 	}
 
