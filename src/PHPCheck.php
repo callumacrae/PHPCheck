@@ -244,7 +244,7 @@ class PHPCheck {
 		}
 
 		return function () use ($min, $max) {
-			return rand($min, $max);
+			return mt_rand($min, $max);
 		};
 	}
 
@@ -274,7 +274,7 @@ class PHPCheck {
 		}
 
 		return function () use ($min, $max) {
-			return $min + ($max - $min) * (rand() / getrandmax());
+			return $min + ($max - $min) * (mt_rand() / mt_getrandmax());
 		};
 	}
 
