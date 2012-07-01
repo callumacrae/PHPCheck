@@ -296,6 +296,15 @@ class PHPCheck {
 	}
 
 	/**
+	 * Returns a value from an array of specifiers.
+	 *
+	 * @param array $array The array of specifiers.
+	 */
+	public static function OneOf($array) {
+		return PHPCheck::evalSpecifier($array[array_rand($array)]);
+	}
+
+	/**
 	 * Takes an array of specifiers and executes them.
 	 *
 	 * @example
