@@ -20,6 +20,14 @@ class PHPCheck {
 		return $this;
 	}
 
+	public function clear($groupName = '') {
+		if (!$groupName) {
+			$this->claims = array();
+			$this->group = 'nogroup';
+			$this->claims['nogroup'] = array();
+		}
+	}
+
 	public function check($groupName = '') {
 		if (!$groupName) {
 			foreach ($this->claims as $groupName => $claim) {
@@ -71,6 +79,11 @@ class PHPCheck {
 
 	public function group($groupName) {
 		$this->group = $groupName;
+
+		if (!$this->claims[$groupName]) {
+			$this->claims[$groupName] = array();
+		}
+
 		return $this;
 	}
 
