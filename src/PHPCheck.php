@@ -212,6 +212,7 @@ class PHPCheck {
 	 */
 	public static function ArrayOf($num, $specifier) {
 		return function () use ($num, $specifier) {
+			$num = PHPCheck::evalSpecifier($num);
 			$output = array();
 			for ($i = 0; $i < $num; $i++) {
 				$output[] = PHPCheck::evalSpecifier($specifier);
@@ -278,7 +279,7 @@ class PHPCheck {
 	}
 
 	/**
-	 * Returns a random number between 0 and a specifier number, or a random
+	 * Returns a random number between 0 and a specified number, or a random
 	 * number between two specified numbers.
 	 *
 	 * @param int $min Minimum number. If not specified, defaults to 0.
