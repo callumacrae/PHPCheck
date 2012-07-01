@@ -25,6 +25,8 @@ class PHPCheck {
 			$this->claims = array();
 			$this->group = 'nogroup';
 			$this->claims['nogroup'] = array();
+		} else {
+			$this->claims[$groupName] = array();
 		}
 		return $this;
 	}
