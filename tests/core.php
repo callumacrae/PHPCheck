@@ -75,6 +75,13 @@ $tests->claim('ArrayOf specifier', function ($a, $b) {
 	PHPCheck::ArrayOf(3, 'a')
 ));
 
+$tests->claim('Boolean specifier', function ($a, $b) {
+	return (is_bool($a) && is_bool($b) && $b === true);
+}, array(
+	PHPCheck::Boolean(),
+	PHPCheck::Boolean(1)
+));
+
 $tests->claim('Integer specifier', function ($a, $b) {
 	if (!is_int($a) || !is_int($b)) {
 		return false;

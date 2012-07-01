@@ -204,6 +204,18 @@ class PHPCheck {
 	}
 
 	/**
+	 * Returns true or false randomly. Can be biased - the higher the bias, the
+	 * greater the chance of true being returned.
+	 *
+	 * @param int $bias Chance of getting true. Defaults to 0.5.
+	 */
+	public static function Boolean($bias = 0.5) {
+		return function () use ($bias) {
+			return rand(0, 1000) < ($bias * 1000); // 1000 so bias more accurate
+		};
+	}
+
+	/**
 	 * Returns a whole number between 0 and a specified integer, or a whole
 	 * number between two specifier integers.
 	 *
