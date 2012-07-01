@@ -303,7 +303,7 @@ class PHPCheck {
 	 */
 	public static function OneOf($input) {
 		return function () use ($input) {
-			$index = is_array($input) ? array_rand($input) : rand(0, strlen($input - 1));
+			$index = is_array($input) ? array_rand($input) : rand(0, strlen($input) - 1);
 			return PHPCheck::evalSpecifier($input[$index]);
 		};
 	}

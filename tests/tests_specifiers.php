@@ -86,10 +86,11 @@ $tests->claim('OneOf specifier (array)', function ($which) use ($OneOf_a, $OneOf
 	}
 ))));
 
-$tests->claim('OneOf specifier (string)', function ($c) {
-	return strlen($c) === 1 && $c > 'b' && $c < 'h';
+$tests->claim('OneOf specifier (string)', function ($c, $d) {
+	return strlen($c) === 1 && $c > 'b' && $c < 'h' && $d === 'a';
 }, array(
-	PHPCheck::OneOf('cdefg')
+	PHPCheck::OneOf('cdefg'),
+	PHPCheck::OneOf('a')
 ));
 
 $tests->claim('SpecArray specifier', function ($ary) {
