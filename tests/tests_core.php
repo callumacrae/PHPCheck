@@ -16,6 +16,17 @@ $tests->claim('$tests->claim should work without specifiers', function () {
 	return true;
 });
 
+$tests->claim('$tests->test should work', function () use ($testTests) {
+	$testTests->clear();
+	$i = 0;
+
+	$testTests->test('sth', function () use (&$i) {
+		$i++;
+	});
+
+	return $i > 0;
+});
+
 $tests->claim('$tests->clear should work', function () use ($testTests) {
 	$testTests->claim('fail', function () {
 		return false;
@@ -29,10 +40,10 @@ $tests->claim('$tests->reps should work', function ($reps) use ($testTests) {
 	$testTests->clear();
 	$i = 0;
 
-	$testTests->claim('reps', function ($i) {
+	$testTests->reps($reps);
+	$testTests->test('reps', function () use (&$i) {
 		$i++;
-	}, array(&$i));
-	$testTests->reps($reps)->check();
+	});
 
 	return $i === $reps;
 }, array(

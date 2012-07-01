@@ -68,22 +68,7 @@ class PHPCheck {
 			}
 		} else {
 			foreach ($this->claims[$groupName] as &$claim) {
-				$pass = true;
-
-				for ($i = 0; $i < $this->reps; $i++) {
-					$arguments = $claim[2];
-					foreach ($arguments as &$specifier) {
-						$specifier = $this->evalSpecifier($specifier);
-					}
-
-					$result = call_user_func_array($claim[1], $arguments);
-
-					if ($result !== true) {
-						$pass = false;
-					}
-				}
-
-				$claim[3] = $pass;
+				$claim[3] = $this->test($claim[0], $claim[1], $claim[2]);
 			}
 		}
 		return $this;
@@ -167,6 +152,36 @@ class PHPCheck {
 	public function reps($reps) {
 		$this->reps = $reps;
 		return $this;
+	}
+
+	/**
+	 * Tests a given claim, returns whether it passed or not.
+	 *
+	 * @param string $testName The name of the test. Unused, but may be used
+	 *	in the future.
+	 * @param function $predicate The predicate.
+	 * @param array $specifiers The specifiers.
+	 * @return boolean Returns whether the claim passed or failed.
+	 */
+	public function test($testName, $predicate, $specifiers = false) {
+		$pass = true;
+
+		for ($i = 0; $i < $this->reps; $i++) {
+			$newSpecifiers = array();
+			if (is_array($specifiers)) {
+				foreach ($specifiers as $specifier) {
+					$newSpecifiers[] = $this->evalSpecifier($specifier);
+				}
+			}
+
+			$result = call_user_func_array($predicate, $newSpecifiers);
+
+			if ($result !== true) {
+				$pass = false;
+			}
+		}
+
+		return $pass;
 	}
 
 	/**
