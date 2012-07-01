@@ -20,11 +20,20 @@ $tests->claim('$tests->test should work', function () use ($testTests) {
 	$testTests->clear();
 	$i = 0;
 
-	$testTests->test('sth', function () use (&$i) {
+	$result = $testTests->test('sth', function () use (&$i) {
 		$i++;
+		return true;
 	});
 
-	return $i > 0;
+	if ($i === 0 || !$result) {
+		return false;
+	}
+
+	$result = $testTests->test('fail', function () {
+		return false;
+	});
+
+	return !$result;
 });
 
 $tests->claim('$tests->clear should work', function () use ($testTests) {
