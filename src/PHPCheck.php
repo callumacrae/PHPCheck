@@ -333,9 +333,22 @@ class PHPCheck {
 	 *
 	 * @param mixed $value Value to stringify.
 	 */
-	public static function String($value) {
-		return function () use ($value) {
-			return json_encode(PHPCheck::evalSpecifier($value));
-		};
+	public static function String($num, $value = false) {
+		if ($value) {
+			$num = PHPCheck::evalSpecifier($num);
+
+			return function () use ($num, $value) {
+				$string = '';
+				for ($i = 0; $i < $num; $i++) {
+					$string .= PHPCheck::evalSpecifier($value);
+				}
+				return $string;
+			};
+		} else {
+			$value = $num;
+			return function () use ($value) {
+				return json_encode(PHPCheck::evalSpecifier($value));
+			};
+		}
 	}
 }

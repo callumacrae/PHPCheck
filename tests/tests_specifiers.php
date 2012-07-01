@@ -122,3 +122,10 @@ $tests->claim('String specifier (simple value)', function ($a, $b, $c) {
 	PHPCheck::String(PHPCheck::Integer(5, 6)),
 	PHPCheck::String(array('a', 'b'))
 ));
+
+$tests->claim('String specifier (num values)', function ($a, $b) {
+	return $a === 'aaa' && ($b === 'aa' || $b === 'aaa');
+}, array(
+	PHPCheck::String(3, PHPCheck::OneOf('a')),
+	PHPCheck::String(PHPCheck::Integer(2, 3), 'a')
+));
