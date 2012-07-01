@@ -18,9 +18,9 @@ $phpcheck->claim( string $testName , function $predicate [ , array $specifiers ]
 
 ```php
 $specifiers = array(
-	PHPCheck::integer(5, 10), // An integer between 5 and 10
-	PHPCheck::string(PHPCheck::integer(2, 4), 'a'), // 2 to 4 "a"s
-	PHPCheck::oneOf(array('cat', 'dog')), // Either cat or dog
+	PHPCheck::Integer(5, 10), // An integer between 5 and 10
+	PHPCheck::String(PHPCheck::integer(2, 4), 'a'), // 2 to 4 "a"s
+	PHPCheck::OneOf(array('cat', 'dog')), // Either cat or dog
 );
 ```
 
@@ -36,8 +36,8 @@ $tests->group('Numbers');
 $tests->claim('Less than', function (a, b) {
 	return (a < b);
 }, array(
-	PHPCheck::number(0, 10),
-	PHPCheck::number(10, 20);
+	PHPCheck::Number(0, 10),
+	PHPCheck::Number(10, 20);
 ));
 
 $tests->check();

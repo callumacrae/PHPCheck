@@ -67,4 +67,18 @@ class PHPCheck {
 
 		return $output;
 	}
+
+
+	// SPECIFIERS ARE AWESOME
+
+	public static function Integer($min, $max = '') {
+		if ($max === '') {
+			$max = $min;
+			$min = 0;
+		}
+
+		return function () use ($min, $max) {
+			return rand($min, $max);
+		};
+	}
 }
