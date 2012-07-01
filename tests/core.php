@@ -13,7 +13,7 @@ $tests->claim('$tests->claim should work with true', function ($a) {
 
 $tests->claim('$tests->claim should work with specifiers', function ($a) {
 	return $a === 'a';
-}, array(function() {
+}, array(function () {
 	return 'a';
 }));
 
@@ -128,7 +128,7 @@ $tests->claim('Integer specifier', function ($a, $b) {
 $tests->claim('Literal specifier', function ($a, $b) {
 	return (is_callable($a) && $b === true);
 }, array(
-	PHPCheck::Literal(function(){}),
+	PHPCheck::Literal(function () {}),
 	PHPCheck::Literal(true)
 ));
 
