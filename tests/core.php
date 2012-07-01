@@ -82,6 +82,25 @@ $tests->claim('Boolean specifier', function ($a, $b) {
 	PHPCheck::Boolean(1)
 ));
 
+$tests->claim('Character specifier', function ($a, $b) {
+	if (strlen($a) !== 1 || strlen($b) !== 1) {
+		return false;
+	}
+
+	if (!is_string($a) || !is_string($b)) {
+		return false;
+	}
+
+	if ($b < 'm' || $b > 'p') {
+		return false;
+	}
+
+	return true;
+}, array(
+	PHPCheck::character(),
+	PHPCheck::character('m', 'p')
+));
+
 $tests->claim('Integer specifier', function ($a, $b) {
 	if (!is_int($a) || !is_int($b)) {
 		return false;

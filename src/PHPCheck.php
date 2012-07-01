@@ -216,6 +216,18 @@ class PHPCheck {
 	}
 
 	/**
+	 * Generates a character between within the given range.
+	 *
+	 * @param string $min Minimum character.
+	 * @param string $max Maxmimum character.
+	 */
+	public static function Character($min = 'a', $max = 'z') {
+		return function () use ($min, $max) {
+			return chr(rand(ord($min), ord($max)));
+		};
+	}
+
+	/**
 	 * Returns a whole number between 0 and a specified integer, or a whole
 	 * number between two specifier integers.
 	 *
