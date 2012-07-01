@@ -5,10 +5,26 @@ class PHPCheck {
 	private $group = 'nogroup';
 	private $reps = 100;
 
+	/**
+	 * Constructor just initiates the nogroup group.
+	 */
 	public function __constructor() {
 		$this->claims['nogroup'] = array();
 	}
 
+	/**
+	 * claim function is used to make claims, aka tests. It doesn't really
+	 * contain any logic, and just adds the test to a private array to be
+	 * handled by the check function.
+	 *
+	 * More docs and examples on this in the README.
+	 *
+	 * @param string $testName The name of the test.
+	 * @param function $predicate The predicate function, which should return
+	 *	true if the test was a success.
+	 * @param array $specifiers An array of specifier functions, to be executed
+	 *	and given to the predicate function as arguments. See README.
+	 */
 	public function claim($testName, $predicate, $specifiers = false) {
 		$this->claims[$this->group][] = array(
 			$testName,
@@ -20,6 +36,13 @@ class PHPCheck {
 		return $this;
 	}
 
+	/**
+	 * Clears all claims on a given group, or if no group is specified, all
+	 * of them.
+	 *
+	 * @param string $groupName The name of the group to clear. If left blank,
+	 *	will clear all of them.
+	 */
 	public function clear($groupName = '') {
 		if (!$groupName) {
 			$this->claims = array();
@@ -31,6 +54,13 @@ class PHPCheck {
 		return $this;
 	}
 
+	/**
+	 * Goes through the tests, executing them and storing whether they pass or
+	 * fail for the get* functions to use.
+	 *
+	 * @param string groupName If specified, will only run the tests in that one
+	 *	group. Not that helpful, mostly used internally.
+	 */
 	public function check($groupName = '') {
 		if (!$groupName) {
 			foreach ($this->claims as $groupName => $claim) {
@@ -59,6 +89,14 @@ class PHPCheck {
 		return $this;
 	}
 
+	/**
+	 * Returns nice HTML saying which tests failed and passed.
+	 *
+	 * @param string $groupName The name of the group to return. If not
+	 *	specified, will return HTML for all the groups. Not hugely useful,
+	 *	mostly just for internal use.
+	 * @return string Returns HTML saying which tests failed and passed.
+	 */
 	public function getHTML($groupName = '') {
 		$output = array();
 		if (!$groupName) {
@@ -78,6 +116,14 @@ class PHPCheck {
 		return $output;
 	}
 
+	/**
+	 * Returns an object saying which tests failed and passed.
+	 *
+	 * @param string $groupName The name of the group to return. If not
+	 *	specified, will return an object for all the groups. Not hugely useful,
+	 *	mostly just for internal use.
+	 * @return object Returns an object saying which tests failed and passed.
+	 */
 	public function getRaw($groupName = '') {
 		$output = array();
 		if (!$groupName) {
@@ -93,6 +139,12 @@ class PHPCheck {
 		return $output;
 	}
 
+	/**
+	 * Changes the currently active group. Kind of similar to namespacing, I
+	 * guess. The group names will be output by the get* functions.
+	 *
+	 * @param string $groupName The name of the group to switch to.
+	 */
 	public function group($groupName) {
 		$this->group = $groupName;
 
@@ -103,11 +155,26 @@ class PHPCheck {
 		return $this;
 	}
 
+	/**
+	 * Changes the number of repeats for each test. Default is 100. More will
+	 * have a greater chance of catching failed tests, but could also slow down
+	 * the application.
+	 *
+	 * @param int $reps Number of repeats to change to.
+	 */
 	public function reps($reps) {
 		$this->reps = $reps;
 		return $this;
 	}
 
+	/**
+	 * Internal method to deal with specifiers. It is public so that it can be
+	 * called inside closures inside the specifiers, which use a different
+	 * scope. PHP sucks.
+	 *
+	 * @param function $specifier The specifier to be handled.
+	 * @return mixed Whatever the specifier returns.
+	 */
 	public function evalSpecifier($specifier) {
 		if (is_callable($specifier)) {
 			$specifier = call_user_func($specifier);
