@@ -33,8 +33,8 @@ $tests = new PHPCheck;
 
 $tests->group('Numbers');
 
-$tests->claim('Less than', function (a, b) {
-	return (a < b);
+$tests->claim('Less than', function ($a, $b) {
+	return ($a < $b);
 }, array(
 	PHPCheck::Number(0, 10),
 	PHPCheck::Number(10, 20);
