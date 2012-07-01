@@ -26,6 +26,7 @@ class PHPCheck {
 			$this->group = 'nogroup';
 			$this->claims['nogroup'] = array();
 		}
+		return $this;
 	}
 
 	public function check($groupName = '') {
@@ -77,6 +78,21 @@ class PHPCheck {
 		return $output;
 	}
 
+	public function getRaw($groupName = '') {
+		$output = array();
+		if (!$groupName) {
+			foreach ($this->claims as $groupName => $claim) {
+				$output[] = array($groupName, $this->getRaw($groupName));
+			}
+		} else {
+			foreach ($this->claims[$groupName] as $claim) {
+				$output[] = array($claim[0], $claim[3]);
+			}
+		}
+
+		return $output;
+	}
+
 	public function group($groupName) {
 		$this->group = $groupName;
 
@@ -87,18 +103,13 @@ class PHPCheck {
 		return $this;
 	}
 
+	public function reps($reps) {
+		$this->reps = $reps;
+		return $this;
+	}
+
 
 	// SPECIFIERS ARE AWESOME
-
-	public static function SpecArray($array) {
-		return function () use ($array) {
-			foreach ($array as &$specifier) {
-				if (is_callable($specifier)) {
-					$specifier = call_user_func($specifier);
-				}
-			}
-		};
-	}
 
 	public static function Integer($min, $max = '') {
 		if ($max === '') {
@@ -108,6 +119,18 @@ class PHPCheck {
 
 		return function () use ($min, $max) {
 			return rand($min, $max);
+		};
+	}
+
+	public static function SpecArray($array) {
+		return function () use ($array) {
+			foreach ($array as &$specifier) {
+				if (is_callable($specifier)) {
+					$specifier = call_user_func($specifier);
+				}
+			}
+
+			return $array;
 		};
 	}
 }
