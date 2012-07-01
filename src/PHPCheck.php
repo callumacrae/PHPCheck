@@ -30,7 +30,12 @@ class PHPCheck {
 				$pass = true;
 
 				for ($i = 0; $i < $this->reps; $i++) {
-					$arguments = $this->createArguments($claim[2]);
+					$arguments = $claim[2];
+					foreach ($arguments as &$specifier) {
+						if (is_callable($specifier)) {
+							$specifier = call_user_func($specifier);
+						}
+					}
 
 					$result = call_user_func_array($claim[1], $arguments);
 
@@ -42,16 +47,6 @@ class PHPCheck {
 				$claim[3] = $pass;
 			}
 		}
-	}
-
-	private function createArguments($specifiers) {
-		foreach ($specifiers as &$specifier) {
-			if (is_callable($specifier)) {
-				$specifier = call_user_func($specifier);
-			}
-		}
-
-		return $specifiers;
 	}
 
 	public function getHTML($groupName = '') {
