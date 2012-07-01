@@ -17,5 +17,4 @@ $tests->claim('less than fail', function ($a, $b) {
 	PHPCheck::Integer(5)
 ));
 
-$tests->check();
-echo $tests->getHTML();
+echo $tests->check()->getHTML();
