@@ -54,6 +54,27 @@ $tests->claim('$tests->claim should work with fail', function () use ($testTests
 
 $tests->group('Specifier tests');
 
+$tests->claim('ArrayOf specifier', function ($a, $b) {
+	if ($b !== array('a', 'a', 'a')) {
+		return false;
+	}
+
+	if (!count($a) === 3) {
+		return false;
+	}
+
+	for ($i = 0; $i < 3; $i++) {
+		if (!is_integer($a[$i]) || $a[$i] > 15 || $a[$i] < 3) {
+			return false;
+		}
+	}
+
+	return true;
+}, array(
+	PHPCheck::ArrayOf(3, PHPCheck::Integer(3, 15)),
+	PHPCheck::ArrayOf(3, 'a')
+));
+
 $tests->claim('Integer specifier', function ($a, $b) {
 	if (!is_int($a) || !is_int($b)) {
 		return false;

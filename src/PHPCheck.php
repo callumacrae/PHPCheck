@@ -41,9 +41,7 @@ class PHPCheck {
 				for ($i = 0; $i < $this->reps; $i++) {
 					$arguments = $claim[2];
 					foreach ($arguments as &$specifier) {
-						if (is_callable($specifier)) {
-							$specifier = call_user_func($specifier);
-						}
+						$specifier = $this->evalSpecifier($specifier);
 					}
 
 					$result = call_user_func_array($claim[1], $arguments);
@@ -108,8 +106,25 @@ class PHPCheck {
 		return $this;
 	}
 
+	public function evalSpecifier($specifier) {
+		if (is_callable($specifier)) {
+			$specifier = call_user_func($specifier);
+		}
+		return $specifier;
+	}
+
 
 	// SPECIFIERS ARE AWESOME
+
+	public static function ArrayOf($num, $specifier) {
+		return function () use ($num, $specifier) {
+			$output = array();
+			for ($i = 0; $i < $num; $i++) {
+				$output[] = PHPCheck::evalSpecifier($specifier);
+			}
+			return $output;
+		};
+	}
 
 	public static function Integer($min, $max = '') {
 		if ($max === '') {
@@ -125,9 +140,7 @@ class PHPCheck {
 	public static function SpecArray($array) {
 		return function () use ($array) {
 			foreach ($array as &$specifier) {
-				if (is_callable($specifier)) {
-					$specifier = call_user_func($specifier);
-				}
+				$specifier = PHPCheck::evalSpecifier($specifier);
 			}
 
 			return $array;
