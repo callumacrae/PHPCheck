@@ -301,8 +301,10 @@ class PHPCheck {
 	 * @param array $array The array of specifiers.
 	 */
 	public static function OneOf($input) {
-		$index = is_array($input) ? array_rand($input) : rand(0, strlen($input - 1));
-		return PHPCheck::evalSpecifier($input[$index]);
+		return function () use ($input) {
+			$index = is_array($input) ? array_rand($input) : rand(0, strlen($input - 1));
+			return PHPCheck::evalSpecifier($input[$index]);
+		};
 	}
 
 	/**
