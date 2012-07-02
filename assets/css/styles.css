@@ -8,6 +8,11 @@ header h1 {
 	margin-bottom: 0;
 }
 
+header h1 a {
+	color: black;
+	text-decoration: none;
+}
+
 #content {
 	width: 800px;
 	margin: 0 auto;
