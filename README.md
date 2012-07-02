@@ -7,6 +7,8 @@ PHPCheck is a testing library for PHP loosely based on Haskell's QuickCheck.
 There are two ways of getting PHPCheck into your project. The first is to require it as you would any other PHP library:
 
 ```php
+<?php
+
 require_once('PHPCheck/src/PHPCheck.php');
 ```
 
@@ -30,6 +32,8 @@ php composer.phar install
 That will download PHPCheck into `vendor/callumacrae/PHPCheck`. You can then either require the file as above, or use Composers awesome autoloader:
 
 ```php
+<?php
+
 require 'vendor/autoload.php';
 ```
 
@@ -48,6 +52,8 @@ $phpcheck->claim( string $testName , function $predicate [ , array $specifiers ]
 `$specifiers` is an optional array of specifiers to be passed to the predicate function. They are usually like this:
 
 ```php
+<?php
+
 $specifiers = array(
 	PHPCheck::Integer(5, 10), // An integer between 5 and 10
 	PHPCheck::String(PHPCheck::integer(2, 4), 'a'), // 2 to 4 "a"s
@@ -58,6 +64,8 @@ $specifiers = array(
 ### Demo
 
 ```php
+<?php
+
 require 'vendor/autoload.php';
 
 $tests = new PHPCheck;
