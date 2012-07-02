@@ -4,6 +4,7 @@
 	<meta charset="utf8">
 	<title>PHPCheck{% if page.title %} &bull; {{ page.title }}{% endif %}</title>
 	<link rel="stylesheet" href="/PHPCheck/assets/css/styles.css">
+	<link rel="stylesheet" href="/PHPCheck/assets/css/highlight.css">
 </head>
 <body>
 	<header>
@@ -18,5 +19,10 @@
 	<footer>
 		<p>Copyright &copy; Callum Macrae 2012</p>
 	</footer>
+
+	<script src="/PHPCheck/assets/js/highlight.min.js"></script>
+	<script type="text/javascript">
+		hljs.initHighlightingOnLoad();
+	</script>
 </body>
 </html>
