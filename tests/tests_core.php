@@ -17,7 +17,6 @@ $tests->claim('$tests->claim should work without specifiers', function () {
 });
 
 $tests->claim('$tests->test should work', function () use ($testTests) {
-	$testTests->clear();
 	$i = 0;
 
 	$result = $testTests->test('sth', function () use (&$i) {
@@ -46,7 +45,6 @@ $tests->claim('$tests->clear should work', function () use ($testTests) {
 });
 
 $tests->claim('$tests->reps should work', function ($reps) use ($testTests) {
-	$testTests->clear();
 	$i = 0;
 
 	$testTests->reps($reps);
@@ -60,7 +58,6 @@ $tests->claim('$tests->reps should work', function ($reps) use ($testTests) {
 ));
 
 $tests->claim('$tests->claim should work with fail', function () use ($testTests) {
-	$testTests->clear();
 	$testTests->claim('fail', function () {
 		return false;
 	});
@@ -71,7 +68,6 @@ $tests->claim('$tests->claim should work with fail', function () use ($testTests
 });
 
 $tests->claim('$tests->claim should work when not tested', function () use ($testTests) {
-	$testTests->clear();
 	$testTests->claim('missing', function () {});
 	return $testTests->getRaw('nogroup') === array(
 		array('missing', null)
@@ -79,7 +75,6 @@ $tests->claim('$tests->claim should work when not tested', function () use ($tes
 });
 
 $tests->claim('Groups should work', function () use ($testTests) {
-	$testTests->clear();
 	$testTests->group('Test group');
 	$testTests->claim('missing', function () {});
 

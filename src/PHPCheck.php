@@ -5,6 +5,9 @@ class PHPCheck {
 	private $group = 'nogroup';
 	private $reps = 100;
 
+	private $setups = array();
+	private $teardowns = array();
+
 	/**
 	 * Constructor just initiates the nogroup group.
 	 */
@@ -68,7 +71,7 @@ class PHPCheck {
 			}
 		} else {
 			foreach ($this->claims[$groupName] as &$claim) {
-				$claim[3] = $this->test($claim[0], $claim[1], $claim[2]);
+				$claim[3] = $this->test($claim[0], $claim[1], $claim[2], $groupName);
 			}
 		}
 		return $this;
@@ -155,15 +158,50 @@ class PHPCheck {
 	}
 
 	/**
+	 * Defines a setup function to be ran before tests. If group name is
+	 * specified, it'll be ran before all tests in that group. If it isn't
+	 * specified, it will be ran for all tests.
+	 *
+	 * @param string $groupName Optional group name.
+	 * @param function $callback Function to be ran before tests.
+	 */
+	public function setup($groupName, $callback = false) {
+		if ($callback) {
+			$this->setups[$groupName] = $callback;
+		} else {
+			$callback = $groupName;
+			$this->setups['nogroup'] = $callback;
+		}
+	}
+
+	/**
+	 * Defines a teardown function to be ran after tests. If group name is
+	 * specified, it'll be ran after all tests in that group. If it isn't
+	 * specified, it will be ran for all tests.
+	 *
+	 * @param string $groupName Optional group name.
+	 * @param function $callback Function to be ran after tests.
+	 */
+	public function teardown($groupName, $callback = false) {
+		if ($callback) {
+			$this->teardowns[$groupName] = $callback;
+		} else {
+			$callback = $groupName;
+			$this->teardowns['nogroup'] = $callback;
+		}
+	}
+
+	/**
 	 * Tests a given claim, returns whether it passed or not.
 	 *
 	 * @param string $testName The name of the test. Unused, but may be used
 	 *	in the future.
 	 * @param function $predicate The predicate.
 	 * @param array $specifiers The specifiers.
+	 * @param string $groupName Internal parameter for setups and teardowns.
 	 * @return boolean Returns whether the claim passed or failed.
 	 */
-	public function test($testName, $predicate, $specifiers = false) {
+	public function test($testName, $predicate, $specifiers = false, $groupName = false) {
 		$pass = true;
 
 		for ($i = 0; $i < $this->reps; $i++) {
@@ -174,7 +212,21 @@ class PHPCheck {
 				}
 			}
 
+			if ($groupName && isset($this->setups[$groupName])) {
+				call_user_func($this->setups[$groupName]);
+			}
+			if (isset($this->setups['nogroup'])) {
+				call_user_func($this->setups['nogroup']);
+			}
+
 			$result = call_user_func_array($predicate, $newSpecifiers);
+
+			if ($groupName && isset($this->teardowns[$groupName])) {
+				call_user_func($this->teardowns[$groupName]);
+			}
+			if (isset($this->teardowns['nogroup'])) {
+				call_user_func($this->teardowns['nogroup']);
+			}
 
 			if ($result !== true) {
 				$pass = false;
