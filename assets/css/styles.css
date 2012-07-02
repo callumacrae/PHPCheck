@@ -1,0 +1,28 @@
+body {
+	font-family: georgia, serif;
+}
+
+header h1 {
+	text-align: center;
+	font-weight: normal;
+	margin-bottom: 0;
+}
+
+#content {
+	width: 800px;
+	margin: 0 auto;
+}
+
+h3 {
+	padding-top: 30px;
+}
+
+h4 {
+	padding-top: 10px;
+}
+
+footer {
+	text-align: center;
+	padding-top: 30px;
+	color: gray;
+}

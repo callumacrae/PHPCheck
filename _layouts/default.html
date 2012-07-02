@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf8">
+	<title>PHPCheck{% if page.title %} &bull; {{ page.title }}{% endif %}</title>
+	<link rel="stylesheet" href="/PHPCheck/assets/css/styles.css">
+</head>
+<body>
+	<header>
+		<h1>PHPCheck</h1>
+	</header>
+
+	<div role="main" id="content">
+		{% if page.title %}<h2>{{ page.title }}</h2>{% endif %}
+		{{ content }}
+	</div>
+
+	<footer>
+		<p>Copyright &copy; Callum Macrae 2012</p>
+	</footer>
+</body>
+</html>
