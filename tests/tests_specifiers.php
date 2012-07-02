@@ -27,7 +27,11 @@ $tests->claim('Boolean specifier', function ($a, $b) {
 ));
 
 $tests->claim('Character specifier', function ($a, $b) {
-	if (!is_string($a) || !is_string($b) || strlen($a) !== 1 || strlen($b) !== 1) {
+	if (!is_string($a) || !is_string($b)) {
+		return false;
+	}
+
+	if (strlen($a) !== 1 || strlen($b) !== 1) {
 		return false;
 	}
 
@@ -66,22 +70,22 @@ $tests->claim('Number specifier', function ($a, $b) {
 	PHPCheck::Number(5, 10)
 ));
 
-$OneOf_a = 0;
-$OneOf_b = 0; // This test will fail, but not very often at all
-$tests->claim('OneOf specifier (array)', function ($which) use ($OneOf_a, $OneOf_b) {
-	if ($which === 'a' && $OneOf_a > 90 && $OneOf_b < 5) {
+$OO_a = 0;
+$OO_b = 0; // This test will fail, but not very often at all
+$tests->claim('OneOf specifier (array)', function ($which) use ($OO_a, $OO_b) {
+	if ($which === 'a' && $OO_a > 90 && $OO_b < 5) {
 		return false;
-	} else if ($OneOf_a < 5 && $OneOf_b > 90) {
+	} else if ($OO_a < 5 && $OO_b > 90) {
 		return false;
 	}
 
 	return true;
 }, array(PHPCheck::OneOf(array(
-	function () use ($OneOf_a) {
-		$OneOf_a++;
+	function () use ($OO_a) {
+		$OO_a++;
 		return 'a';
-	}, function () use ($OneOf_b) {
-		$OneOf_b++;
+	}, function () use ($OO_b) {
+		$OO_b++;
 		return 'b';
 	}
 ))));

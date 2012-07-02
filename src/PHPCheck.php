@@ -61,17 +61,17 @@ class PHPCheck {
 	 * Goes through the tests, executing them and storing whether they pass or
 	 * fail for the get* functions to use.
 	 *
-	 * @param string groupName If specified, will only run the tests in that one
+	 * @param string group If specified, will only run the tests in that one
 	 *	group. Not that helpful, mostly used internally.
 	 */
-	public function check($groupName = '') {
-		if (!$groupName) {
-			foreach ($this->claims as $groupName => $claim) {
-				$this->check($groupName);
+	public function check($group = '') {
+		if (!$group) {
+			foreach ($this->claims as $group => $claim) {
+				$this->check($group);
 			}
 		} else {
-			foreach ($this->claims[$groupName] as &$claim) {
-				$claim[3] = $this->test($claim[0], $claim[1], $claim[2], $groupName);
+			foreach ($this->claims[$group] as &$claim) {
+				$claim[3] = $this->test($claim[0], $claim[1], $claim[2], $group);
 			}
 		}
 		return $this;
@@ -89,15 +89,26 @@ class PHPCheck {
 		$output = array();
 		if (!$groupName) {
 			foreach ($this->claims as $groupName => $claim) {
-				$output[] = '<h2>' . $groupName . '</h2>' . $this->getHTML($groupName);
+				$string = '<h2>' . $groupName . '</h2>';
+				$string .= $this->getHTML($groupName);
+				$output[] = $string;
 			}
 
 			return implode('<br /><br />', $output);
 		} else {
+			$statuses = array(
+				true	=> 'pass',
+				false	=> 'fail',
+				null	=> 'untested'
+			);
+			$colors = array(
+				true	=> 'green',
+				false	=> 'red',
+				null	=> 'yellow'
+			);
 			foreach ($this->claims[$groupName] as $claim) {
-				$status = $claim[3] ? 'pass' : ($claim[3] === false ? 'fail' : 'untested');
-				$color = $claim[3] ? 'green' : ($claim[3] === false ? 'red' : 'yellow');
-				$output[] = '<b style="color:' . $color . '">' . $claim[0] . ':</b> ' . $status;
+				$output[] = '<b style="color:' . $colors[$claim[3]] . '">'
+					. $claim[0] . ':</b> ' . $statuses[$claim[3]];
 			}
 
 			return implode('<br />', $output);
@@ -194,20 +205,20 @@ class PHPCheck {
 	/**
 	 * Tests a given claim, returns whether it passed or not.
 	 *
-	 * @param string $testName The name of the test. Unused, but may be used
-	 *	in the future.
+	 * @param string $test The name of the test. Unused, but may be used some
+	 *	time in the future.
 	 * @param function $predicate The predicate.
-	 * @param array $specifiers The specifiers.
+	 * @param array $specs The specifiers.
 	 * @param string $groupName Internal parameter for setups and teardowns.
 	 * @return boolean Returns whether the claim passed or failed.
 	 */
-	public function test($testName, $predicate, $specifiers = false, $groupName = false) {
+	public function test($test, $predicate, $specs = false, $groupName = '') {
 		$pass = true;
 
 		for ($i = 0; $i < $this->reps; $i++) {
 			$newSpecifiers = array();
-			if (is_array($specifiers)) {
-				foreach ($specifiers as $specifier) {
+			if (is_array($specs)) {
+				foreach ($specs as $specifier) {
 					$newSpecifiers[] = $this->evalSpecifier($specifier);
 				}
 			}
@@ -282,7 +293,9 @@ class PHPCheck {
 	 */
 	public static function Boolean($bias = 0.5) {
 		return function () use ($bias) {
-			return rand(0, 1000) <= ($bias * 1000); // 1000 so bias more accurate
+			// We multiple $bias by 1000 so that it is more accurate - rand()
+			// only does whole numbers, which is useless when the bias is < 1
+			return rand(0, 1000) <= ($bias * 1000);
 		};
 	}
 
@@ -352,8 +365,8 @@ class PHPCheck {
 	 */
 	public static function OneOf($input) {
 		return function () use ($input) {
-			$index = is_array($input) ? array_rand($input) : rand(0, strlen($input) - 1);
-			return PHPCheck::evalSpecifier($input[$index]);
+			$max = (is_array($input) ? count($input) : strlen($input)) - 1;
+			return PHPCheck::evalSpecifier($input[rand(0, $max)]);
 		};
 	}
 

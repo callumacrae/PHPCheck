@@ -2,7 +2,7 @@
 
 $tests->group('Core tests');
 
-$tests->claim('$tests->claim should work with true', function ($a) {
+$tests->claim('Passed tests should be passed', function ($a) {
 	return $a === $a;
 }, array('a'));
 
@@ -57,7 +57,7 @@ $tests->claim('$tests->reps should work', function ($reps) use ($testTests) {
 	PHPCheck::Integer(1, 10)
 ));
 
-$tests->claim('$tests->claim should work with fail', function () use ($testTests) {
+$tests->claim('Failed claims should be failed', function () use ($testTests) {
 	$testTests->claim('fail', function () {
 		return false;
 	});
@@ -67,7 +67,7 @@ $tests->claim('$tests->claim should work with fail', function () use ($testTests
 	);
 });
 
-$tests->claim('$tests->claim should work when not tested', function () use ($testTests) {
+$tests->claim('Missing claims should be missed', function () use ($testTests) {
 	$testTests->claim('missing', function () {});
 	return $testTests->getRaw('nogroup') === array(
 		array('missing', null)
