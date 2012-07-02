@@ -2,6 +2,37 @@
 
 PHPCheck is a testing library for PHP loosely based on Haskell's QuickCheck.
 
+## Installation
+
+There are two ways of getting PHPCheck into your project. The first is to require it as you would any other PHP library:
+
+```php
+require_once('PHPCheck/src/PHPCheck.php');
+```
+
+The second is to use [Composer](http://getcomposer.org/). Either add `callumacrae/PHPCheck` to your composer.json, or create one containing the following:
+
+```json
+{
+	"require": {
+		"callumacrae/PHPCheck": "*"
+	}
+}
+```
+
+Then run the following two commands:
+
+```bash
+curl -s http://getcomposer.org/installer | php
+php composer.phar install
+```
+
+That will download PHPCheck into `vendor/callumacrae/PHPCheck`. You can then either require the file as above, or use Composers awesome autoloader:
+
+```php
+require 'vendor/autoload.php';
+```
+
 ## Usage
 
 To start using PHPCheck, include `phpcheck.php` and create a new instance of the PHPCheck object. Then, use the `$phpcheck->claim` method to make "claims". It accepts the following arguments:
@@ -27,7 +58,7 @@ $specifiers = array(
 ### Demo
 
 ```php
-include('src/PHPCheck.php');
+require 'vendor/autoload.php';
 
 $tests = new PHPCheck;
 
