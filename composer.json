@@ -4,6 +4,7 @@
 	"description": "A testing library for PHP loosely based on Haskell's QuickCheck library.",
 	"keywords": ["testing", "PHP", "QuickCheck"],
 	"homepage": "https://github.com/callumacrae/PHPCheck",
+	"license": "Creative Commons Attribution-ShareAlike 3.0 Unported License",
 	"authors": [
 		{
 			"name": "Callum Macrae",
