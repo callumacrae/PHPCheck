@@ -17,7 +17,7 @@ The second is to use [Composer](http://getcomposer.org/). Either add `callumacra
 ```json
 {
 	"require": {
-		"callumacrae/PHPCheck": "*"
+		"callumacrae/PHPCheck": "master"
 	}
 }
 ```
